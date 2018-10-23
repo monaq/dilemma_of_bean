@@ -28,11 +28,13 @@ module.exports = function(app, fs) {
   });
 
   app.get("/back/start", (req, res) => {
-    res.render("start.html");
+    res.render("back/start.html");
   });
 
   app.get("/back/time", (req, res) => {
-    res.render("time.html");
+    res.render("back/time", {
+        title: "콩의 딜레마 - 남은시간"
+    });
   });
 
   app.get("/back/summary", (req, res) => {
@@ -70,13 +72,14 @@ module.exports = function(app, fs) {
         "utf8",
         function(err, data) {
           result = { success: 1 };
-          console.log(payload);
           if (result.success === 1) {
             res.redirect("/game/wait");
           }
         }
       );
     });
+
+
 
     // res.redirect('/game/wait')
   });
