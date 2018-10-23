@@ -1,0 +1,17 @@
+<html>
+  <head>
+  <title><%= title %></title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+    <h1>게임~스타트! 게임~스타트!</h1>
+    <p>님은 <%= team %> 팀의 <%= user %>군요.</p>
+    <p>남은 콩 중에 몇 개를 내시겠어요?</p>
+    <form method="POST" action="/write">
+      <input type="hidden" name="team" value=<%= team %> />
+      <input type="hidden" name="user" value=<%= user %> />
+      <input type="number" name="beans" />
+      <button type="submit">제출</button>
+    </form>
+  </body>
+</html>

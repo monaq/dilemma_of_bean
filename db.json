@@ -1,27 +1,26 @@
 {
-    "0": {
-        "team": "A",
-        "count": 10
-    },
-    "1": {
-        "team": "A",
-        "count": 10
-    },
-    "2": {
-        "team": "A",
-        "count": 10
-    },
-    "3": {
-        "team": "B",
-        "count": 10
-    },
-    "4": {
-        "team": "B",
-        "count": 10
-    },
-    "5": {
-        "team": "B",
-        "count": 10
-    }
+	"hyo": {
+		"team": "A",
+		"beans": 10
+	},
+	"dia": {
+		"team": "A",
+		"beans": 10
+	},
+	"merlin": {
+		"team": "A",
+		"beans": 1
+	},
+	"justin": {
+		"team": "B",
+		"beans": 10
+	},
+	"monica": {
+		"team": "B",
+		"beans": 10
+	},
+	"jake": {
+		"team": "B",
+		"beans": 8
+	}
 }
-
