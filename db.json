@@ -9,7 +9,7 @@
 	},
 	"merlin": {
 		"team": "A",
-		"beans": 1
+		"beans": 5
 	},
 	"justin": {
 		"team": "B",
@@ -17,10 +17,10 @@
 	},
 	"monica": {
 		"team": "B",
-		"beans": 9
+		"beans": 8
 	},
 	"jake": {
 		"team": "B",
-		"beans": 8
+		"beans": 10
 	}
 }

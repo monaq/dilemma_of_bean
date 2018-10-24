@@ -2,16 +2,22 @@ module.exports = function(app, fs) {
   app.get("/", (req, res) => {
     // res.render("index.html");
     res.render("index", {
-      title: "콩의 딜레마 - index",
-      length: 5
+      title: "콩의 딜레마 - index"
     });
   });
 
   app.get("/game/:team/:user", (req, res) => {
-    res.render("game", {
-      title: "콩의 딜레마 - game",
-      team: req.params.team,
-      user: req.params.user
+    fs.readFile(__dirname + "/db.json", "utf8", (err, data) => {
+      const payload = JSON.parse(data);
+      const remainBeans = payload[req.params.user].beans;
+      const count = remainBeans
+
+      res.render("game", {
+        title: "콩의 딜레마 - game",
+        team: req.params.team,
+        user: req.params.user,
+        count: count
+      });
     });
   });
 
@@ -23,7 +29,17 @@ module.exports = function(app, fs) {
 
   app.get("/back/result", (req, res) => {
     fs.readFile(__dirname + "/db.json", "utf8", (err, data) => {
-      res.end(data);
+      const parsed = JSON.parse(data)
+      const payload = Object.keys(parsed).map(function(k) { return parsed[k] });
+
+      // const teamB = payload.filter(item => item.team === 'B')
+      const teamA = payload.filter(item => item.team === 'A').map(item => item.beans).reduce((acc, cur) => acc + cur, 0)
+      const teamB = payload.filter(item => item.team === 'B').map(item => item.beans).reduce((acc, cur) => acc + cur, 0)
+      res.render("back/result", {
+        title: "콩의 딜레마 - 결과",
+        teamA: teamA,
+        teamB: teamB
+      });
     });
   });
 
@@ -38,7 +54,9 @@ module.exports = function(app, fs) {
   });
 
   app.get("/back/summary", (req, res) => {
-    res.render("summary.html");
+    fs.readFile(__dirname + "/db.json", "utf8", (err, data) => {
+      res.end(data);
+    });
   });
 
   app.post("/write", (req, res) => {
