@@ -1,4 +1,7 @@
-module.exports = function(app, fs) {
+module.exports = function (app, fs) {
+  const data = [[],[],[],[],[],[],[],[],[],[]]
+  let round = -1
+
   app.get("/", (req, res) => {
     // res.render("index.html");
     res.render("index", {
@@ -7,18 +10,24 @@ module.exports = function(app, fs) {
   });
 
   app.get("/game/:team/:user", (req, res) => {
-    fs.readFile(__dirname + "/db.json", "utf8", (err, data) => {
-      const payload = JSON.parse(data);
-      const remainBeans = payload[req.params.user].beans;
-      const count = remainBeans
-
-      res.render("game", {
-        title: "콩의 딜레마 - game",
-        team: req.params.team,
+    let user = data[round].find(item => item.user === req.params.user)
+    if(!user) {
+      data[round].push({
         user: req.params.user,
-        count: count
-      });
+        team: req.params.team,
+        beans: 10,
+        summit: 0
+      })
+      user = data[round].find(item => item.user === req.params.user)
+    } 
+
+    res.render("game", {
+      title: "콩의 딜레마 - game",
+      team: req.params.team,
+      user: req.params.user,
+      count: user.beans
     });
+
   });
 
   app.get("/game/wait", (req, res) => {
@@ -28,18 +37,13 @@ module.exports = function(app, fs) {
   });
 
   app.get("/back/result", (req, res) => {
-    fs.readFile(__dirname + "/db.json", "utf8", (err, data) => {
-      const parsed = JSON.parse(data)
-      const payload = Object.keys(parsed).map(function(k) { return parsed[k] });
-
-      // const teamB = payload.filter(item => item.team === 'B')
-      const teamA = payload.filter(item => item.team === 'A').map(item => item.summit).reduce((acc, cur) => acc + cur, 0)
-      const teamB = payload.filter(item => item.team === 'B').map(item => item.summit).reduce((acc, cur) => acc + cur, 0)
-      res.render("back/result", {
-        title: "콩의 딜레마 - 결과",
-        teamA: teamA,
-        teamB: teamB
-      });
+    const teamA = data[round].filter(item => item.team === 'A').map(item => item.summit).reduce((acc, cur) => acc + cur, 0)
+    const teamB = data[round].filter(item => item.team === 'B').map(item => item.summit).reduce((acc, cur) => acc + cur, 0)
+    res.render("back/result", {
+      title: "콩의 딜레마 - 결과",
+      teamA: teamA,
+      teamB: teamB,
+      round: round + 1
     });
   });
 
@@ -54,15 +58,15 @@ module.exports = function(app, fs) {
   });
 
   app.get("/back/time", (req, res) => {
+    round++
     res.render("back/time", {
-        title: "콩의 딜레마 - 남은시간"
+      title: "콩의 딜레마 - 남은시간",
+      round: round + 1
     });
   });
 
   app.get("/back/summary", (req, res) => {
-    fs.readFile(__dirname + "/db.json", "utf8", (err, data) => {
-      res.end(data);
-    });
+    res.json(data[round]);
   });
 
   app.post("/write", (req, res) => {
@@ -81,35 +85,19 @@ module.exports = function(app, fs) {
       return;
     }
 
-    fs.readFile(__dirname + "/db.json", "utf8", (err, data) => {
-      const payload = JSON.parse(data);
-      if(username){
-        let remainBeans = payload[username].beans;
-      
-        if (remainBeans - beansCount > 0) {
-          payload[username].beans = Number(remainBeans - beansCount);
-          payload[username].summit = Number(beansCount);
-        } else {
-          res.json('남은 콩이 모자라요. 뒤로 다시 돌아가주세요')  
-        }
+    if(round > -1){
+      const userData = data[round].find(item => item.user === username)
+      let remainBeans = userData.beans;
+      if (remainBeans - beansCount > 0) {
+        userData.beans = Number(remainBeans - beansCount);
+        userData.summit = Number(beansCount);
       } else {
-        alert('다시 시도해 주세요')
+        res.json('남은 콩이 모자라요. 뒤로 다시 돌아가주세요')  
       }
-      fs.writeFile(
-        __dirname + "/db.json",
-        JSON.stringify(payload, null, "\t"),
-        "utf8",
-        function(err, data) {
-          result = { success: 1 };
-          if (result.success === 1) {
-            res.redirect("/game/wait");
-          }
-        }
-      );
-    });
-
-
-
-    // res.redirect('/game/wait')
+      res.redirect('/game/wait')
+    } else {
+      res.json('아직 라운드가 시작하지 않았어요')
+    }
+    
   });
 };
