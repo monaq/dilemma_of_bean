@@ -1,5 +1,5 @@
 {
-	"hyo": {
+	"jake": {
 		"team": "A",
 		"beans": 10,
 		"summit": 0
@@ -11,8 +11,8 @@
 	},
 	"merlin": {
 		"team": "A",
-		"beans": 6,
-		"summit": 4
+		"beans": 10,
+		"summit": 0
 	},
 	"justin": {
 		"team": "B",
@@ -24,7 +24,7 @@
 		"beans": 10,
 		"summit": 0
 	},
-	"jake": {
+	"hyo": {
 		"team": "B",
 		"beans": 10,
 		"summit": 0

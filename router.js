@@ -43,6 +43,12 @@ module.exports = function(app, fs) {
     });
   });
 
+  app.get("/back", (req, res) => {
+    res.render("back/index", {
+      title: "콩의 딜레마 - 진행자페이지"
+    });
+  });
+
   app.get("/back/start", (req, res) => {
     res.render("back/start.html");
   });
