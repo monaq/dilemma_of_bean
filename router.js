@@ -33,8 +33,8 @@ module.exports = function(app, fs) {
       const payload = Object.keys(parsed).map(function(k) { return parsed[k] });
 
       // const teamB = payload.filter(item => item.team === 'B')
-      const teamA = payload.filter(item => item.team === 'A').map(item => item.beans).reduce((acc, cur) => acc + cur, 0)
-      const teamB = payload.filter(item => item.team === 'B').map(item => item.beans).reduce((acc, cur) => acc + cur, 0)
+      const teamA = payload.filter(item => item.team === 'A').map(item => item.summit).reduce((acc, cur) => acc + cur, 0)
+      const teamB = payload.filter(item => item.team === 'B').map(item => item.summit).reduce((acc, cur) => acc + cur, 0)
       res.render("back/result", {
         title: "콩의 딜레마 - 결과",
         teamA: teamA,
@@ -77,13 +77,18 @@ module.exports = function(app, fs) {
 
     fs.readFile(__dirname + "/db.json", "utf8", (err, data) => {
       const payload = JSON.parse(data);
-      let remainBeans = payload[username].beans;
-      if (remainBeans - beansCount > 0) {
-        payload[username].beans = remainBeans - beansCount;
+      if(username){
+        let remainBeans = payload[username].beans;
+      
+        if (remainBeans - beansCount > 0) {
+          payload[username].beans = Number(remainBeans - beansCount);
+          payload[username].summit = Number(beansCount);
+        } else {
+          res.json('남은 콩이 모자라요. 뒤로 다시 돌아가주세요')  
+        }
       } else {
-        res.json('남은 콩이 모자라요. 뒤로 다시 돌아가주세요')  
+        alert('다시 시도해 주세요')
       }
-
       fs.writeFile(
         __dirname + "/db.json",
         JSON.stringify(payload, null, "\t"),

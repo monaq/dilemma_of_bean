@@ -1,26 +1,32 @@
 {
 	"hyo": {
 		"team": "A",
-		"beans": 10
+		"beans": 10,
+		"summit": 0
 	},
 	"dia": {
 		"team": "A",
-		"beans": 10
+		"beans": 10,
+		"summit": 0
 	},
 	"merlin": {
 		"team": "A",
-		"beans": 5
+		"beans": 6,
+		"summit": 4
 	},
 	"justin": {
 		"team": "B",
-		"beans": 10
+		"beans": 10,
+		"summit": 0
 	},
 	"monica": {
 		"team": "B",
-		"beans": 8
+		"beans": 10,
+		"summit": 0
 	},
 	"jake": {
 		"team": "B",
-		"beans": 10
+		"beans": 10,
+		"summit": 0
 	}
 }
