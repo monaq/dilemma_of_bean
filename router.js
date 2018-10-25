@@ -10,14 +10,15 @@ module.exports = function (app, fs) {
   });
 
   app.get("/game/:team/:user", (req, res) => {
-    let user
+    let user, prevUser
     if(data[round]){
       user = data[round].find(item => item.user === req.params.user)
+      prevUser = data[round - 1] ? data[round - 1].find(item => item.user === req.params.user) : null
       if(!user) {
         data[round].push({
           user: req.params.user,
           team: req.params.team,
-          beans: 10,
+          beans: prevUser ? prevUser.beans : 10,
           summit: 0
         })
         user = data[round].find(item => item.user === req.params.user)
