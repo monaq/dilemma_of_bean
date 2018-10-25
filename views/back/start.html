@@ -3,7 +3,9 @@
     <title>About</title>
   </head>
   <body>
-    <button id="redirect">Start</button>
+    <form method="POST" action="/api/start">
+        <button id="redirect">Start</button>
+    </form>
   </body>
   <script>
     document.getElementById('redirect').addEventListener('click', () => {

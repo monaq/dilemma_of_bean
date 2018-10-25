@@ -1,5 +1,5 @@
 module.exports = function (app, fs) {
-  const data = [[],[],[],[],[],[],[],[],[],[]]
+  const data = [[],[],[],[],[],[],[],[],[],[]] //최대 10라운드 가능
   let round = -1
 
   app.get("/", (req, res) => {
@@ -25,6 +25,7 @@ module.exports = function (app, fs) {
       title: "콩의 딜레마 - game",
       team: req.params.team,
       user: req.params.user,
+      round: round + 1,
       count: user.beans
     });
 
@@ -57,8 +58,12 @@ module.exports = function (app, fs) {
     res.render("back/start.html");
   });
 
-  app.get("/back/time", (req, res) => {
+  app.post("/api/start", (req, res) => {
     round++
+    res.redirect('/back/time')
+  });
+
+  app.get("/back/time", (req, res) => {
     res.render("back/time", {
       title: "콩의 딜레마 - 남은시간",
       round: round + 1
