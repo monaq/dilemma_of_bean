@@ -1,5 +1,5 @@
 module.exports = function (app, fs) {
-  const data = [[],[],[],[],[],[],[],[],[],[]] //최대 10라운드 가능
+  let data = [[],[],[],[],[],[],[],[],[],[],[]] //최대 10라운드 가능
   let round = -1
 
   app.get("/", (req, res) => {
@@ -10,17 +10,21 @@ module.exports = function (app, fs) {
   });
 
   app.get("/game/:team/:user", (req, res) => {
-    let user = data[round].find(item => item.user === req.params.user)
-    if(!user) {
-      data[round].push({
-        user: req.params.user,
-        team: req.params.team,
-        beans: 10,
-        summit: 0
-      })
+    let user
+    if(data[round]){
       user = data[round].find(item => item.user === req.params.user)
-    } 
-
+      if(!user) {
+        data[round].push({
+          user: req.params.user,
+          team: req.params.team,
+          beans: 10,
+          summit: 0
+        })
+        user = data[round].find(item => item.user === req.params.user)
+      } 
+    } else {
+      res.json('아직 라운드가 시작하지 않았어요. 진행자가 시작할 떄까지 뒤로 가서 기다려주세요')
+    }
     res.render("game", {
       title: "콩의 딜레마 - game",
       team: req.params.team,
@@ -59,8 +63,14 @@ module.exports = function (app, fs) {
   });
 
   app.post("/api/start", (req, res) => {
-    round++
-    res.redirect('/back/time')
+    round++;
+    res.redirect('/back/time');
+  });
+
+  app.post("/api/reset", (req, res) => {
+    round = -1;
+    data = [[],[],[],[],[],[],[],[],[],[],[]];
+    res.json('라운드가 리셋되었습니다')
   });
 
   app.get("/back/time", (req, res) => {
@@ -91,17 +101,17 @@ module.exports = function (app, fs) {
     }
 
     if(round > -1){
-      const userData = data[round].find(item => item.user === username)
+      const userData = data[round].find(item => item.user === username);
       let remainBeans = userData.beans;
       if (remainBeans - beansCount > 0) {
         userData.beans = Number(remainBeans - beansCount);
         userData.summit = Number(beansCount);
       } else {
-        res.json('남은 콩이 모자라요. 뒤로 다시 돌아가주세요')  
+        res.json('남은 콩이 모자라요. 뒤로 다시 돌아가주세요');
       }
-      res.redirect('/game/wait')
+      res.redirect('/game/' + team + '/' + username);
     } else {
-      res.json('아직 라운드가 시작하지 않았어요')
+      res.json('아직 라운드가 시작하지 않았어요');
     }
     
   });
