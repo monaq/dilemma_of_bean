@@ -1,15 +1,13 @@
 <html>
-
 <head>
   <title>
     <%= title %>
   </title>
 </head>
-
 <body>
   <h1><%= round %> 라운드</h1>
   <h1 id="time">05:00</h1>
-  <button id="redirect">결과 보기</button>
+  <a href="/back/result">라운드 종료</a>
 </body>
 <script>
   function startTimer(duration, display) {
@@ -34,11 +32,6 @@
     var fiveMinutes = 60 * 5,
       display = document.querySelector('#time');
     startTimer(fiveMinutes, display);
-
-    document.getElementById('redirect').addEventListener('click', () => {
-      window.location.href = '/back/result';
-    });
-
   };
 </script>
 

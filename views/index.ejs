@@ -7,17 +7,15 @@
     <h1>게임을 시작하시려면 <br>개인 url로 접속 부탁드림</h1>
     <p>ex) /:team/:name</p>
     <a href="/back" target="_blank">진행자 페이지 가기</a>
-    <p>팀 A :</p>
-    <ul>
-      <li><a href="/game/A/hyo">hyo</a></li>
-      <li><a href="/game/A/dia">dia</a></li>
-      <li><a href="/game/A/merlin">merlin</a></li>
-    </ul>
-    <p>팀 B :</p>
-    <ul>
-      <li><a href="/game/B/justin">justin</a></li>
-      <li><a href="/game/B/monica">monica</a></li>
-      <li><a href="/game/B/jake">jake</a></li>
-    </ul>
+    <form method="POST" action="/back/join">
+    팀선택: 
+    <select name="team">
+      <option>A</option>
+      <option>B</option>
+    </select>
+    이름:
+    <input name="username" type="text" />
+    <button type="submit">참가하기!</button>
+  </form>
   </body>
 </html>
